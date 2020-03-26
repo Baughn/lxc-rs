@@ -1,6 +1,45 @@
 image: "rust:latest"
 
+stages:
+    - lint
+    - test
+
+.clippy: &clippy
+    stage: lint
+    before_script:
+        - apt update
+        - apt install lxc-dev clang -y
+        - rustup component add clippy
+    script:
+        - VERSION=$(echo "$CI_JOB_NAME" | cut -d ':' -f 3)
+        - cargo clippy --features="v${VERSION/./_}"
+
+lint:clippy:1.0:
+    <<: *clippy
+
+lint:clippy:1.1:
+    <<: *clippy
+
+lint:clippy:2.0:
+    <<: *clippy
+
+lint:clippy:2.1:
+    <<: *clippy
+
+lint:clippy:3.0:
+    <<: *clippy
+
+lint:clippy:3.1:
+    <<: *clippy
+
+lint:clippy:3.2:
+    <<: *clippy
+
+lint:clippy:4.0:
+    <<: *clippy
+
 .test: &test
+    stage: test
     before_script:
         - VERSION=$(echo "$CI_JOB_NAME" | cut -d ':' -f 2)
 
