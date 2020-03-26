@@ -4,6 +4,20 @@ stages:
     - lint
     - test
 
+lint:fmt:
+    stage: lint
+    before_script:
+        - rustup component add rustfmt
+    script:
+        - cargo fmt
+        - if test $(git ls-files --modified | wc -l) -ne 0;
+          then
+              echo 'You have introduced some unformated code:';
+              git ls-files --modified | sed 's/^/* /';
+              echo 'Please run `cargo fmt` and amend your PR.';
+              exit 1;
+          fi
+
 .clippy: &clippy
     stage: lint
     before_script:
