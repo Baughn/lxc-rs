@@ -11,7 +11,7 @@ description = "Linux Containers API"
 edition = "2018"
 
 [dependencies]
-bitflags = "1.0"
+bitflags = "2.2"
 
 [dependencies.lxc-sys]
 version = "0.3"
